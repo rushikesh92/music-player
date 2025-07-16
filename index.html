@@ -1,13 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sportify Clone</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/utility.css">
 </head>
+
 <body>
-    
+    <div class="container flex  ">
+        <div class="left  bg-black">
+            <div class="home bg-grey rounded p-1">
+                <div class="log">
+                    <img src="IMG/logo.svg" alt="logo" class="invert">
+                </div>
+                <ul>
+                    <li><img src="IMG/home.svg" alt="home" class="invert">Home</li>
+                    <li><img src="IMG/search.svg" alt="saerch" class="invert">Search</li>
+                </ul>
+            </div>
+            <div class="library bg-grey rounded m-1 p1">
+                <div class="heading">
+                    <img src="IMG/playlist.svg" alt="" class="invert">
+                    <h2>My Library</h2>
+                </div>
+
+                <div class="songList">
+                    <ul>
+                    </ul>
+                </div>
+
+                <div class="footer p-1 m-1">
+                    <div class="footer">
+                        <div><a href="https://www.spotify.com/jp/legal/"><span>Legal</span></a></div>
+                        <div><a href="https://www.spotify.com/jp/privacy/"><span>Safety & Privacy Center</span></a>
+                        </div>
+                        <div><a href="https://www.spotify.com/jp/legal/privacy-policy/"><span>Privacy Policy</span></a>
+                        </div>
+                        <div><a href="https://www.spotify.com/jp/legal/cookies-policy/"><span>Cookies</span></a></div>
+                        <div><a href="https://www.spotify.com/jp/legal/privacy-policy/#s3"><span>About Ads</span></a>
+                        </div>
+                        <div><a href="https://www.spotify.com/jp/accessibility/"><span>Accessibility</span></a></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!-- right side -->
+        <div class="right bg-grey rounded">
+
+            <div class="header rounded ">
+                <div class="nav">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff"
+                        fill="none">
+                        <path d="M15 6C15 6 9.00001 10.4189 9 12C8.99999 13.5812 15 18 15 18" stroke="#ffffff"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff"
+                        fill="none">
+                        <path d="M9.00005 6C9.00005 6 15 10.4189 15 12C15 13.5812 9 18 9 18" stroke="#ffffff"
+                            stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+                <div class="buttons">
+                    <button class="btn signUpBtn">Sign up</button>
+                    <button class="btn logInBtn">Log-in</button>
+                </div>
+            </div>
+            <div class="spotifyPlaylists">
+                <div class="cardContainer">
+                    <div class="card">
+                        <img src="IMG/cover.jpg" alt="cover">
+                        <h2>Jazz For Sleep</h2>
+                        <p>Hits to boost your mood and fill you with happiness!</p>
+                    </div>
+                    <div class="card">
+                        <img src="IMG/cover.jpg" alt="cover">
+                        <h2>Happy Hits</h2>
+                        <p>Hits to boost your mood and fill you with happiness!</p>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div class="playbar">
+
+                <div class="songInfo"></div>
+
+                <div class="songButtons">
+                    <img src="IMG/prevsong.svg" alt="prevsong" class="invert">
+                    <img src="IMG/play.svg" alt="play" class="invert">
+                    <img src="IMG/nextsong.svg"  alt="nextsong"  class="invert">
+                </div>
+
+                <div class="songTime"></div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="JS/script.js"></script>
 </body>
+
 </html>
