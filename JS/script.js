@@ -1,7 +1,43 @@
 console.log("Script attached")
 
+//global current song
+var currentSong = new Audio();
+
+
+function playSong(track, pause = false) {
+    currentSong.src = track;
+    if (!pause) {
+        currentSong.play();
+        play.src = "IMG/pause.svg"
+    }
+    document.querySelector(".songName").innerHTML = track.replaceAll("_", " ").slice(7, track.length - 4);
+    console.log("playing - ", track)
+}
+
+//converting seconds to timestamp
+function secondsToTimestamp(seconds) {
+    let timestamp = "00:00"
+    if (seconds <= 0 || isNaN(seconds)) {
+        return timestamp;
+    }
+    let mins = Math.floor((seconds / 60));
+    let secs = Math.floor(seconds % 60);
+
+    if (mins < 10) {
+        mins = "0" + mins;
+    }
+    if (secs < 10) {
+        secs = "0" + secs;
+    }
+    timestamp = mins + ":" + secs;
+    return timestamp;
+
+
+}
+
+
 async function getSongs() {
-    
+
     let a = await fetch("http://127.0.0.1:5500/SONGS/")
 
     let response = await a.text();
@@ -14,33 +50,101 @@ async function getSongs() {
     let songs = []
     let songNames = []
 
-    for( let i=0; i< allA.length ; i++){
+    for (let i = 0; i < allA.length; i++) {
         const element = allA[i];
-        if(element.href.endsWith(".mp3")){
+        if (element.href.endsWith(".mp3")) {
             songs.push(element.href)
-            songNames.push(element.href.split("/SONGS/")[1])
+            songNames.push(element.href.split("/SONGS/")[1])//splitting  http://127.0.0.1:5500  split /SONGS/name 
         }
 
     }
+
     // console.log(songNames)
 
-    let songUl= document.querySelector(".songList").getElementsByTagName("ul")[0];
+
+    //adding song names to library
+
+    let songUl = document.querySelector(".songList").getElementsByTagName("ul")[0];
     // console.log(songUl)
     for (let song of songNames) {
-        song = song.replace("_" , " ")
-        songUl.innerHTML +=` <li>${song}</li>` ;
+        song = song.replaceAll("_", " ")
+        song = song.slice(0, song.length - 4);  //removing .mp3
+        let html = `<li>
+        <img src="IMG/music.svg" class="invert" alt="">
+        <div class="songInfo">
+        <div>${song}</div>
+        <div class="artist">One Direction</div>
+        </div>
+        <div class="playNow">
+        <span>Play Now</span>
+        <img src="IMG/play.svg" class="invert" alt="">
+        </div>
+        </li>`
+
+        songUl.innerHTML += html;;
     }
+
+    //load first song at playbar automatically
+
+    playSong("/SONGS/" + songNames[0], true);
+
     return songs;
 }
+
+
 async function main() {
-    let songs  = await getSongs()
-    console.log(songs)
+    let songs = await getSongs()
+    // console.log(songs)
 
     //playing song
-    var audio = new Audio(songs[0]); 
-    audio.play();  
+    // var audio = new Audio(songs[0]);
+    // audio.play();  
+
+
+
+    //playing functionality
+
+    //getting all li's in songList
+    let allLi = Array.from(document.querySelector(".songList").getElementsByTagName("li"))
+    allLi.forEach((li) => {
+
+        //adding eventListner on each li
+
+        li.addEventListener("click", () => {
+
+            //extracting song name
+            let sName = "/SONGS/" + li.querySelector("div").firstElementChild.innerHTML.replaceAll(" ", "_") + ".mp3";
+            // console.log(sName)
+            playSong(sName);
+
+        })
+
+    })
+
+
+    //attaching event listner to buttons in playbar
+    play.addEventListener("click", () => {
+        if (currentSong.paused) {
+            currentSong.play();
+            play.src = "IMG/pause.svg"
+
+        }
+        else {
+            currentSong.pause();
+            play.src = "IMG/play.svg"
+        }
+    })
+
+    //creating eventlistner to update duration of song
+
+    currentSong.addEventListener("timeupdate", () => {
+        document.querySelector(".songTime").innerHTML = secondsToTimestamp(currentSong.currentTime) + "/" + secondsToTimestamp(currentSong.duration);
+    })
 }
+
 
 
 
 main();
+
+

@@ -4,10 +4,11 @@
     margin: 0;
     padding: 0;
     font-family: "Roboto", sans-serif;
+    box-sizing: border-box;
 }
 
 .left {
-    width: 25vw;
+    width: max(345px, 25vw);
     margin: 16px 0px;
 }
 
@@ -53,11 +54,63 @@ body {
 .heading img {
     width: 25px;
 }
-.songList{
-    padding:0px 35px;
+
+.songList {
+    padding: 0px 20px;
+    height: 420px;
+    overflow: auto;
 }
-.songList ul{
-    list-style-type: decimal;
+
+.songList ul {
+    list-style-type: none;
+}
+
+.songList ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+
+    margin: 13px 0px;
+    padding: 10px;
+
+    border: 1px solid white;
+    border-radius: 7px;
+    cursor: pointer;
+
+
+}
+
+.songList ul li:hover {
+    transform: scale(1.01);
+}
+
+.songList ul li img {
+    width: 18px;
+}
+
+
+.songList ul li .songInfo {
+    width: 344px;
+    font-size: 12px;
+
+
+}
+
+.artist {
+    font-size: 11px;
+}
+
+.playNow {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.playNow span {
+    font-size: 11px;
+    width: 50px;
+
 }
 
 .footer {
@@ -78,6 +131,7 @@ body {
 /* right side */
 .right {
     width: 75vw;
+    height: 97vh;
     margin: 16px 0px;
     position: relative;
 }
@@ -113,6 +167,21 @@ body {
     padding: 8px;
     background-color: #252525;
     border-radius: 10px;
+    transition: transform 0.1s;
+    position: relative;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card .playButton {
+    width: 37px;
+    position: absolute;
+    bottom: 100px;
+    right: 15px;
+    opacity: 1;
+    transition: all 0.5s ease-in;
 }
 
 .card img {
@@ -127,48 +196,93 @@ body {
 .card>* {
     margin-top: 10px;
 }
-.btn{
+
+.btn {
     border: none;
     font-size: 13px;
-    padding:9px 20px;
+    padding: 9px 20px;
     border-radius: 40px;
     font-weight: bold;
     cursor: pointer;
 }
 
-.buttons{
 
-}
-.signUpBtn{
+.signUpBtn {
     background-color: #212121;
     color: rgb(214, 214, 214);
 }
-.logInBtn{
+
+.logInBtn {
     background-color: white;
     color: black;
 }
-.signUpBtn:hover{
+
+.signUpBtn:hover {
     color: white;
-    font-size:14px
-
+    font-size: 14px
 }
-.logInBtn:hover{
+
+.logInBtn:hover {
     background-color: rgb(232, 232, 232);
-    font-size:14px
-
+    font-size: 14px
 }
 
-.playbar{
-    position: absolute;
-    bottom: 0;
+.playbar {
+    position: fixed;
+    bottom: 23px;
     background-color: rgb(41, 41, 41);
-    width: 100%;
-    padding: 12px;
+    width: 70vw;
+    border-radius: 5px;
+    height: 50px;
 
 }
-.songButtons{
+
+.songDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(215, 215, 215);
+    margin-top: 7px;
+    padding: 3px;
+}
+
+.songName {
+    /* width: 400px; */
+}
+
+.songButtons {
 
     display: flex;
     justify-content: center;
     gap: 16px;
+    position: absolute;
+    left: 45%;
+}
+
+.songButtons img {
+    width: 20px;
+    cursor: pointer;
+}
+
+.seekbar {
+    width: 98%;
+    height: 2px;
+    background-color: rgb(191, 191, 191);
+
+    margin: 6px;
+
+    position: absolute;
+    bottom: 0;
+}
+
+.seekbar .circle {
+    background-color: rgb(255, 255, 255);
+    width: 13px;
+    height: 13px;
+    border-radius: 13px;
+    position: relative;
+    bottom: 6px;
+    left: 0%;
+
+    transition: left 0.5s;
 }
