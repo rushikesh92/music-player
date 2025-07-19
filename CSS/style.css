@@ -11,6 +11,18 @@
     width: max(345px, 25vw);
     margin: 16px 0px;
 }
+.logo{
+    display: flex   ;
+    justify-content: space-between;
+}
+
+.logo > .spotify{
+    width: 100px;
+}
+.close{
+    width: 32px;
+    display: none;
+}
 
 body {
     background-color: black;
@@ -57,7 +69,7 @@ body {
 
 .songList {
     padding: 0px 20px;
-    height: 420px;
+    height: 57vh;
     overflow: auto;
 }
 
@@ -146,9 +158,14 @@ body {
 .header>* {
     padding: 20px;
 }
-
+.hamburger{
+    display: none;
+}
 .spotifyPlaylists {
     height: 80vh;
+}
+.spotifyPlaylists h1{
+    margin: 20px;
 }
 
 .cardContainer {
@@ -157,7 +174,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .card {
@@ -231,9 +248,10 @@ body {
     position: fixed;
     bottom: 23px;
     background-color: rgb(41, 41, 41);
-    width: 70vw;
+    width: 90vw;
     border-radius: 5px;
     height: 50px;
+    z-index: 1;
 
 }
 
@@ -266,13 +284,15 @@ body {
 
 .seekbar {
     width: 98%;
-    height: 2px;
+    height: 4px;
     background-color: rgb(191, 191, 191);
 
     margin: 6px;
 
     position: absolute;
     bottom: 0;
+    cursor: pointer;
+    z-index: 5;
 }
 
 .seekbar .circle {
@@ -281,8 +301,61 @@ body {
     height: 13px;
     border-radius: 13px;
     position: relative;
-    bottom: 6px;
+    bottom: 5px;
     left: 0%;
 
-    transition: left 0.5s;
+    transition: left 0.2s;
+    z-index: 5;
+}
+
+/* making page responsive */
+
+@media (max-width: 1281px) {
+     
+    .left{
+        position: absolute;
+        left: -120%;
+        z-index: 10 ;
+        transition: all 0.5s;
+    }
+    .right{
+        width: 100vw;
+        margin: 0;
+
+    }
+    .playbar{
+        margin-left: 10px;
+        width: 95%;
+        font-size: 12px;
+        height: auto;
+        padding-bottom: 10px;
+    }
+    .songDetails{
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+
+    }
+    .songButtons{
+        position: inherit;
+
+    }
+    .hamburger{
+        display: inline;
+    }
+    .close{
+        display: inline;
+    }
+    .card{
+        width: 70vw;
+        height:auto;
+    }
+    .cardContainer{
+        margin: 0;
+        padding: 0;
+        padding-top: 10px;
+        justify-content: center ;
+
+    }
 }

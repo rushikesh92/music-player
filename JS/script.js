@@ -138,8 +138,42 @@ async function main() {
     //creating eventlistner to update duration of song
 
     currentSong.addEventListener("timeupdate", () => {
+
+        //if song ends change pause button to play
+        if(currentSong.currentTime == currentSong.duration){
+            play.src = "IMG/play.svg";
+        }
         document.querySelector(".songTime").innerHTML = secondsToTimestamp(currentSong.currentTime) + "/" + secondsToTimestamp(currentSong.duration);
+
+        //updating seekbar circle
+        document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
     })
+
+    //creating eventlistner on  seekbar to change song's current time based on user click
+    document.querySelector(".seekbar").addEventListener("click", (e) => {
+
+        let domRect = e.target.getBoundingClientRect() //return DOM Rectangle which  includes width height etc
+        console.log(e.offsetX ,domRect.width);//width of seekbar depending on device width
+        //offset gives the position of click on seekbar
+
+        let percent = (e.offsetX / domRect.width )*100;
+        //update current time accordingly
+        currentSong.currentTime = currentSong.duration * percent /100;
+    })
+
+
+    // for responsive page
+
+    //in tabs/mobiles on clicking hamburger left side bar will open
+    document.querySelector(".hamburger").addEventListener("click", (e)=>{
+        document.querySelector(".left").style.left =0;
+    })
+    //on clicking close it will close
+    document.querySelector(".close").addEventListener("click", (e)=>{
+        console.log(e)
+        document.querySelector(".left").style.left ="-120%";
+    })
+
 }
 
 
