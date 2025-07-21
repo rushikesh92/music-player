@@ -2,6 +2,7 @@ console.log("Script attached")
 
 //global current song
 var currentSong = new Audio();
+let songNames = []
 
 
 function playSong(track, pause = false) {
@@ -48,7 +49,6 @@ async function getSongs() {
 
     let allA = div.getElementsByTagName("a")
     let songs = []
-    let songNames = []
 
     for (let i = 0; i < allA.length; i++) {
         const element = allA[i];
@@ -140,7 +140,7 @@ async function main() {
     currentSong.addEventListener("timeupdate", () => {
 
         //if song ends change pause button to play
-        if(currentSong.currentTime == currentSong.duration){
+        if (currentSong.currentTime == currentSong.duration) {
             play.src = "IMG/play.svg";
         }
         document.querySelector(".songTime").innerHTML = secondsToTimestamp(currentSong.currentTime) + "/" + secondsToTimestamp(currentSong.duration);
@@ -153,26 +153,84 @@ async function main() {
     document.querySelector(".seekbar").addEventListener("click", (e) => {
 
         let domRect = e.target.getBoundingClientRect() //return DOM Rectangle which  includes width height etc
-        console.log(e.offsetX ,domRect.width);//width of seekbar depending on device width
+        console.log(e.offsetX, domRect.width);//width of seekbar depending on device width
         //offset gives the position of click on seekbar
 
-        let percent = (e.offsetX / domRect.width )*100;
+        let percent = (e.offsetX / domRect.width) * 100;
         //update current time accordingly
-        currentSong.currentTime = currentSong.duration * percent /100;
+        currentSong.currentTime = currentSong.duration * percent / 100;
     })
 
 
     // for responsive page
 
     //in tabs/mobiles on clicking hamburger left side bar will open
-    document.querySelector(".hamburger").addEventListener("click", (e)=>{
-        document.querySelector(".left").style.left =0;
+    document.querySelector(".hamburger").addEventListener("click", (e) => {
+        document.querySelector(".left").style.left = 0;
     })
     //on clicking close it will close
-    document.querySelector(".close").addEventListener("click", (e)=>{
+    document.querySelector(".close").addEventListener("click", (e) => {
         console.log(e)
-        document.querySelector(".left").style.left ="-120%";
+        document.querySelector(".left").style.left = "-120%";
     })
+
+    // console.log(songNames);
+    // console.log(currentSong.src.split("/")[4])
+
+    //play next song  functionality
+    next.addEventListener("click", () => {
+        console.log("next clicked")
+        let i = songNames.indexOf(currentSong.src.split("/")[4]);
+        playSong("/SONGS/" + songNames[(i + 1) % songNames.length]);
+
+    })
+    //play previous song functionality
+    previous.addEventListener("click", () => {
+        console.log("prev clicked")
+        let i = songNames.indexOf(currentSong.src.split("/")[4]);
+        if ((i - 1) >= 0) {
+            playSong("/SONGS/" + songNames[(i - 1)]);
+        } else {
+            playSong("/SONGS/" + songNames[(songNames.length - 1)]);
+
+        }
+    })
+
+    //volume mute / unmutw]e
+    volume.addEventListener("click", () => {
+        if (currentSong.volume != 0) {
+            currentSong.volume = "0";
+            volume.src = "IMG/mute.svg";
+            volume.classList.add("invert")
+
+            document.querySelector(".range").value=0;
+        }
+        else {
+            currentSong.volume = "1";
+            volume.src = "IMG/volume.svg";
+            volume.classList.remove("invert")
+            document.querySelector(".range").value=100;
+
+        }
+    })
+
+    //volume increase decrease
+    document.querySelector(".range").addEventListener("change", (e) => {
+        console.log("setting volume to:", e.target.value, "/ 100");
+        currentSong.volume = e.target.value / 100;
+        if (e.target.value == 0) {
+            volume.src = "IMG/mute.svg";
+            volume.classList.add("invert")
+
+        }
+        else {
+            volume.src = "IMG/volume.svg";
+            volume.classList.remove("invert")
+
+
+        }
+    })
+
 
 }
 

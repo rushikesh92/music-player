@@ -11,15 +11,17 @@
     width: max(345px, 25vw);
     margin: 16px 0px;
 }
-.logo{
-    display: flex   ;
+
+.logo {
+    display: flex;
     justify-content: space-between;
 }
 
-.logo > .spotify{
+.logo>.spotify {
     width: 100px;
 }
-.close{
+
+.close {
     width: 32px;
     display: none;
 }
@@ -158,13 +160,16 @@ body {
 .header>* {
     padding: 20px;
 }
-.hamburger{
+
+.hamburger {
     display: none;
 }
+
 .spotifyPlaylists {
     height: 80vh;
 }
-.spotifyPlaylists h1{
+
+.spotifyPlaylists h1 {
     margin: 20px;
 }
 
@@ -195,7 +200,7 @@ body {
 .card .playButton {
     width: 37px;
     position: absolute;
-    bottom: 100px;
+    bottom: 36%;
     right: 15px;
     opacity: 1;
     transition: all 0.5s ease-in;
@@ -248,7 +253,7 @@ body {
     position: fixed;
     bottom: 23px;
     background-color: rgb(41, 41, 41);
-    width: 90vw;
+    width: 74vw;
     border-radius: 5px;
     height: 50px;
     z-index: 1;
@@ -282,6 +287,31 @@ body {
     cursor: pointer;
 }
 
+.timeVol {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.timevol img {
+    width: 17px;
+}
+
+.volumeSec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+}
+
+.volumeSec .range {
+    height: 4px;
+    width: 80px;
+    accent-color: rgb(62, 62, 62);
+}
+
 .seekbar {
     width: 98%;
     height: 4px;
@@ -311,51 +341,83 @@ body {
 /* making page responsive */
 
 @media (max-width: 1281px) {
-     
-    .left{
+
+    .left {
         position: absolute;
         left: -120%;
-        z-index: 10 ;
+        z-index: 10;
         transition: all 0.5s;
     }
-    .right{
+
+    .right {
         width: 100vw;
         margin: 0;
 
     }
-    .playbar{
+
+    .playbar {
         margin-left: 10px;
         width: 95%;
         font-size: 12px;
         height: auto;
         padding-bottom: 10px;
     }
-    .songDetails{
+
+    .songDetails {
         height: auto;
         flex-direction: column;
         align-items: center;
         gap: 5px;
 
     }
-    .songButtons{
+
+    .songButtons {
         position: inherit;
 
     }
-    .hamburger{
+
+    .hamburger {
         display: inline;
     }
-    .close{
+
+    .close {
         display: inline;
     }
-    .card{
-        width: 70vw;
-        height:auto;
+
+    .card {
+        width: 40vw;
+        /* height: auto; */
     }
-    .cardContainer{
+
+    .card .playButton {
+        display: none;
+    }
+
+    .cardContainer {
         margin: 0;
         padding: 0;
         padding-top: 10px;
-        justify-content: center ;
+        justify-content: center;
 
+    }
+
+    .timeVol {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+/* specific to mobiles */
+@media (max-width: 600px) {
+    .card {
+        width: 80vw;
+        height: auto;
+    }
+
+    .card .playButton {
+        display: none;
     }
 }
