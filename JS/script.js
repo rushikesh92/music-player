@@ -3,15 +3,20 @@ console.log("Script attached")
 //global current song
 var currentSong = new Audio();
 let songNames = []
+let callcount = 0;//to track if its default playlist or user selected playlist
 
-
+let currentFolder = "";
 function playSong(track, pause = false) {
+    // console.log(track)
     currentSong.src = track;
     if (!pause) {
         currentSong.play();
         play.src = "IMG/pause.svg"
     }
-    document.querySelector(".songName").innerHTML = track.replaceAll("_", " ").slice(7, track.length - 4);
+    let rawName = track.split("/").pop(); // safely gets "song_name.mp3"
+    let cleanName = rawName.replaceAll("_", " ").replace(".mp3", "");
+    document.querySelector(".songName").innerHTML = cleanName;
+
     console.log("playing - ", track)
 }
 
@@ -36,10 +41,13 @@ function secondsToTimestamp(seconds) {
 
 }
 
+//call like getSongs("folder/")
+async function getSongs(folder) {
 
-async function getSongs() {
+    callcount++;
 
-    let a = await fetch("http://127.0.0.1:5500/SONGS/")
+    currentFolder = folder.replaceAll(" ", "%20");
+    let a = await fetch(`http://127.0.0.1:5500/${folder}`)
 
     let response = await a.text();
     // console.log(response)
@@ -48,13 +56,13 @@ async function getSongs() {
     div.innerHTML = response;
 
     let allA = div.getElementsByTagName("a")
-    let songs = []
-
+    songNames = []
     for (let i = 0; i < allA.length; i++) {
         const element = allA[i];
         if (element.href.endsWith(".mp3")) {
-            songs.push(element.href)
-            songNames.push(element.href.split("/SONGS/")[1])//splitting  http://127.0.0.1:5500  split /SONGS/name 
+            let parts = element.href.split('/');
+            let fileName = parts[parts.length - 1];
+            songNames.push(fileName)//splitting  http://127.0.0.1:5500  split /folder/name/ 
         }
 
     }
@@ -63,8 +71,9 @@ async function getSongs() {
 
 
     //adding song names to library
-
     let songUl = document.querySelector(".songList").getElementsByTagName("ul")[0];
+    songUl.innerHTML = "";
+
     // console.log(songUl)
     for (let song of songNames) {
         song = song.replaceAll("_", " ")
@@ -73,7 +82,7 @@ async function getSongs() {
         <img src="IMG/music.svg" class="invert" alt="">
         <div class="songInfo">
         <div>${song}</div>
-        <div class="artist">One Direction</div>
+        <div class="artist"></div>
         </div>
         <div class="playNow">
         <span>Play Now</span>
@@ -84,36 +93,17 @@ async function getSongs() {
         songUl.innerHTML += html;;
     }
 
-    //load first song at playbar automatically
-
-    playSong("/SONGS/" + songNames[0], true);
-
-    return songs;
-}
-
-
-async function main() {
-    let songs = await getSongs()
-    // console.log(songs)
-
-    //playing song
-    // var audio = new Audio(songs[0]);
-    // audio.play();  
-
-
-
     //playing functionality
-
     //getting all li's in songList
     let allLi = Array.from(document.querySelector(".songList").getElementsByTagName("li"))
     allLi.forEach((li) => {
 
         //adding eventListner on each li
-
+        // console.log(li)
         li.addEventListener("click", () => {
-
+            // console.log("Current Folder: - ",currentFolder)
             //extracting song name
-            let sName = "/SONGS/" + li.querySelector("div").firstElementChild.innerHTML.replaceAll(" ", "_") + ".mp3";
+            let sName = `${currentFolder}` + li.querySelector("div").firstElementChild.innerHTML.replaceAll(" ", "_") + ".mp3";
             // console.log(sName)
             playSong(sName);
 
@@ -122,6 +112,58 @@ async function main() {
     })
 
 
+    //load first song at playbar automatically
+    if (callcount <= 1) {//if function is called by default then pause loded song
+        playSong(`${folder}` + songNames[0], true);
+    }
+    else {//for manual clicking on playlist play loaded song
+        playSong(`${folder}` + songNames[0], false);
+
+    }
+
+
+}
+
+async function loadAlbums() {
+    let a = await fetch("http://127.0.0.1:5500/SONGS/");
+    let response = await a.text();
+
+    let div = document.createElement("div");
+    div.innerHTML = response;
+    // console.log(div)
+
+    let anchors = div.getElementsByTagName("a");
+    // console.log(anchors)
+
+
+    let cardContainer = document.querySelector(".cardContainer");
+    // console.log(cardContainer)
+
+    let arr = Array.from(anchors);
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].href.includes("/SONGS/")) {
+            // console.log(arr[i])
+            let folder = arr[i].title;
+            let a = await fetch(`http://127.0.0.1:5500/SONGS/${folder}/info.json`);
+            let info = await a.json();
+            cardContainer.innerHTML += `<div class="card" data-folder="${folder}">
+                        <img src="/SONGS/${arr[i].title}/cover.jpg" alt="cover">
+                        <h2>${info.title}</h2>
+                        <p>${info.desc}</p>
+                        <img src="IMG/greenplay.svg" alt="" class="playButton">
+                    </div>`;
+
+        }
+    }
+
+
+}
+
+async function main() {
+    //default song in library
+    await getSongs("SONGS/Graduation-Kanye West/");
+
+    await loadAlbums();
     //attaching event listner to buttons in playbar
     play.addEventListener("click", () => {
         if (currentSong.paused) {
@@ -139,9 +181,10 @@ async function main() {
 
     currentSong.addEventListener("timeupdate", () => {
 
-        //if song ends change pause button to play
+        //if song ends change to next song 
         if (currentSong.currentTime == currentSong.duration) {
-            play.src = "IMG/play.svg";
+            let i = songNames.indexOf(currentSong.src.split("/").pop());
+            playSong(`${currentFolder}` + songNames[(i + 1) % songNames.length]);
         }
         document.querySelector(".songTime").innerHTML = secondsToTimestamp(currentSong.currentTime) + "/" + secondsToTimestamp(currentSong.duration);
 
@@ -153,7 +196,7 @@ async function main() {
     document.querySelector(".seekbar").addEventListener("click", (e) => {
 
         let domRect = e.target.getBoundingClientRect() //return DOM Rectangle which  includes width height etc
-        console.log(e.offsetX, domRect.width);//width of seekbar depending on device width
+        // console.log(e.offsetX, domRect.width);//width of seekbar depending on device width
         //offset gives the position of click on seekbar
 
         let percent = (e.offsetX / domRect.width) * 100;
@@ -170,28 +213,25 @@ async function main() {
     })
     //on clicking close it will close
     document.querySelector(".close").addEventListener("click", (e) => {
-        console.log(e)
+        // console.log(e)
         document.querySelector(".left").style.left = "-120%";
     })
-
-    // console.log(songNames);
-    // console.log(currentSong.src.split("/")[4])
 
     //play next song  functionality
     next.addEventListener("click", () => {
         console.log("next clicked")
-        let i = songNames.indexOf(currentSong.src.split("/")[4]);
-        playSong("/SONGS/" + songNames[(i + 1) % songNames.length]);
+        let i = songNames.indexOf(currentSong.src.split("/").pop());
+        playSong(`${currentFolder}` + songNames[(i + 1) % songNames.length]);
 
     })
     //play previous song functionality
     previous.addEventListener("click", () => {
         console.log("prev clicked")
-        let i = songNames.indexOf(currentSong.src.split("/")[4]);
+        let i = songNames.indexOf(currentSong.src.split("/").pop());
         if ((i - 1) >= 0) {
-            playSong("/SONGS/" + songNames[(i - 1)]);
+            playSong(`${currentFolder}` + songNames[(i - 1)]);
         } else {
-            playSong("/SONGS/" + songNames[(songNames.length - 1)]);
+            playSong(`${currentFolder}` + songNames[(songNames.length - 1)]);
 
         }
     })
@@ -203,13 +243,13 @@ async function main() {
             volume.src = "IMG/mute.svg";
             volume.classList.add("invert")
 
-            document.querySelector(".range").value=0;
+            document.querySelector(".range").value = 0;
         }
         else {
             currentSong.volume = "1";
             volume.src = "IMG/volume.svg";
             volume.classList.remove("invert")
-            document.querySelector(".range").value=100;
+            document.querySelector(".range").value = 100;
 
         }
     })
@@ -229,6 +269,15 @@ async function main() {
 
 
         }
+    })
+
+    //load  songs of clicked folder in library
+    Array.from(document.getElementsByClassName("card")).forEach((card) => {
+        // console.log(card)
+        card.addEventListener("click", async (e) => {
+            console.log("Folder : ", e.currentTarget.dataset.folder);
+            getSongs("SONGS/" + e.currentTarget.dataset.folder + "/");
+        })
     })
 
 

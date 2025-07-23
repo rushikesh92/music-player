@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
-
+:root{
+    --showPlay :0;
+}
 * {
     margin: 0;
     padding: 0;
@@ -174,7 +176,7 @@ body {
 }
 
 .cardContainer {
-    height: 70vh;
+    height: 60vh;
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
@@ -184,7 +186,7 @@ body {
 
 .card {
     width: 177px;
-    height: 270px;
+    height: 290px;
     /* border: 1px solid white; */
     padding: 8px;
     background-color: #252525;
@@ -194,7 +196,10 @@ body {
 }
 
 .card:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
+    background-color: #373737;
+    --showPlay :1;
+
 }
 
 .card .playButton {
@@ -202,8 +207,8 @@ body {
     position: absolute;
     bottom: 36%;
     right: 15px;
-    opacity: 1;
-    transition: all 0.5s ease-in;
+    opacity: var(--showPlay);
+    transition: all 0.1s ease-in;
 }
 
 .card img {
@@ -255,7 +260,7 @@ body {
     background-color: rgb(41, 41, 41);
     width: 74vw;
     border-radius: 5px;
-    height: 50px;
+    height: 60px;
     z-index: 1;
 
 }
