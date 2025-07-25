@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
-:root{
-    --showPlay :0;
+
+:root {
+    --showPlay: 0;
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -37,6 +39,10 @@ body {
     margin: 0px 5px;
 }
 
+.home a{
+    text-decoration: none;
+    color: white;
+}
 .home ul li {
     display: flex;
     list-style: none;
@@ -156,7 +162,7 @@ body {
     display: flex;
     justify-content: space-between;
     background-color: #212121;
-    height: 10vh;
+    /* height: 10vh; */
 }
 
 .header>* {
@@ -172,7 +178,8 @@ body {
 }
 
 .spotifyPlaylists h1 {
-    margin: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .cardContainer {
@@ -189,7 +196,7 @@ body {
     height: 290px;
     /* border: 1px solid white; */
     padding: 8px;
-    background-color: #252525;
+    background-color: #2a2a2a;
     border-radius: 10px;
     transition: transform 0.1s;
     position: relative;
@@ -198,15 +205,15 @@ body {
 .card:hover {
     transform: scale(1.01);
     background-color: #373737;
-    --showPlay :1;
+    --showPlay: 1;
 
 }
 
 .card .playButton {
     width: 37px;
     position: absolute;
-    bottom: 36%;
-    right: 15px;
+    bottom: 120px;
+    right: 17px;
     opacity: var(--showPlay);
     transition: all 0.1s ease-in;
 }
@@ -246,21 +253,21 @@ body {
 
 .signUpBtn:hover {
     color: white;
-    font-size: 14px
+    font-size: 13px
 }
 
 .logInBtn:hover {
     background-color: rgb(232, 232, 232);
-    font-size: 14px
+    font-size: 13px
 }
 
 .playbar {
     position: fixed;
     bottom: 23px;
-    background-color: rgb(41, 41, 41);
+    background-color: rgb(20 11 56);
     width: 74vw;
     border-radius: 5px;
-    height: 60px;
+    height: 55px;
     z-index: 1;
 
 }
@@ -274,9 +281,9 @@ body {
     padding: 3px;
 }
 
-.songName {
-    /* width: 400px; */
-}
+/* .songName {
+    /* width: 400px; 
+} */
 
 .songButtons {
 
@@ -311,10 +318,16 @@ body {
 
 }
 
+.volumeSec img {
+    cursor: pointer;
+}
+
 .volumeSec .range {
     height: 4px;
     width: 80px;
-    accent-color: rgb(62, 62, 62);
+    accent-color: rgb(131, 117, 152);
+    cursor: pointer;
+
 }
 
 .seekbar {
@@ -345,6 +358,7 @@ body {
 
 /* making page responsive */
 
+/* tabs + mobile */
 @media (max-width: 1281px) {
 
     .left {
@@ -352,6 +366,7 @@ body {
         left: -120%;
         z-index: 10;
         transition: all 0.5s;
+        height: 100vh;;
     }
 
     .right {
@@ -359,6 +374,9 @@ body {
         margin: 0;
 
     }
+    .header {
+    height: 8vh;
+}
 
     .playbar {
         margin-left: 10px;
@@ -383,6 +401,7 @@ body {
 
     .hamburger {
         display: inline;
+        cursor: pointer;
     }
 
     .close {
@@ -391,18 +410,33 @@ body {
 
     .card {
         width: 40vw;
-        /* height: auto; */
+        height: auto;
+        font-size: 150%;
     }
 
     .card .playButton {
-        display: none;
+
+        bottom: 185px;
+        right: 17px;
     }
+
+    .card:hover {
+        --showPlay: 1;
+    }
+
+    .card p {
+        font-size: 110%;
+
+    }
+
 
     .cardContainer {
         margin: 0;
         padding: 0;
         padding-top: 10px;
         justify-content: center;
+        height: 70vh;
+
 
     }
 
@@ -417,12 +451,22 @@ body {
 
 /* specific to mobiles */
 @media (max-width: 600px) {
+    .cardContainer {
+        height: 65vh;
+    }
+
     .card {
         width: 80vw;
+
         height: auto;
+        font-size: 100%;
     }
 
     .card .playButton {
-        display: none;
+
+        bottom: 105px;
+        right: 17px;
     }
+
+    
 }

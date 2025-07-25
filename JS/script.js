@@ -47,7 +47,7 @@ async function getSongs(folder) {
     callcount++;
 
     currentFolder = folder.replaceAll(" ", "%20");
-    let a = await fetch(`http://127.0.0.1:5500/${folder}`)
+    let a = await fetch(`/${folder}`)
 
     let response = await a.text();
     // console.log(response)
@@ -62,7 +62,7 @@ async function getSongs(folder) {
         if (element.href.endsWith(".mp3")) {
             let parts = element.href.split('/');
             let fileName = parts[parts.length - 1];
-            songNames.push(fileName)//splitting  http://127.0.0.1:5500  split /folder/name/ 
+            songNames.push(fileName)
         }
 
     }
@@ -125,7 +125,7 @@ async function getSongs(folder) {
 }
 
 async function loadAlbums() {
-    let a = await fetch("http://127.0.0.1:5500/SONGS/");
+    let a = await fetch("/SONGS/");
     let response = await a.text();
 
     let div = document.createElement("div");
@@ -144,7 +144,7 @@ async function loadAlbums() {
         if (arr[i].href.includes("/SONGS/")) {
             // console.log(arr[i])
             let folder = arr[i].title;
-            let a = await fetch(`http://127.0.0.1:5500/SONGS/${folder}/info.json`);
+            let a = await fetch(`/SONGS/${folder}/info.json`);
             let info = await a.json();
             cardContainer.innerHTML += `<div class="card" data-folder="${folder}">
                         <img src="/SONGS/${arr[i].title}/cover.jpg" alt="cover">
@@ -289,3 +289,8 @@ async function main() {
 main();
 
 
+function toggleTheme() {
+    document.body.classList.toggle("light-theme");
+}
+let theme = document.getElementById("theme");
+theme.addEventListener("click" , toggleTheme);
