@@ -289,8 +289,3 @@ async function main() {
 main();
 
 
-function toggleTheme() {
-    document.body.classList.toggle("light-theme");
-}
-let theme = document.getElementById("theme");
-theme.addEventListener("click" , toggleTheme);
