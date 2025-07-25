@@ -6,7 +6,7 @@ A full-featured Spotify-inspired music player built using **HTML**, **CSS**, and
 
 Songs are organized in folders inside a `SONGS/` directory, and albums are dynamically loaded with metadata. The player is fully responsive and includes song library for each album, seekbar and volume controls.
 
->_This project excludes actual copyrighted songs, no copyrighted tracks are added instead._
+>_This project excludes actual copyrighted songs, non-copyrighted tracks are added instead._
 ---
 
 ## 🚀 Features
