@@ -1,4 +1,4 @@
-# 🎵 Spotify Clone -Simple Music Player
+# 🎵 Spotify Clone - Simple Music Player
 
 A full-featured Spotify-inspired music player built using **HTML**, **CSS**, and **JavaScript**. 
 
@@ -14,7 +14,7 @@ Songs are organized in folders inside a `SONGS/` directory, and albums are dynam
 -  **Play music from  `SONGS/` folder**
 -  **Album-wise playlist generation** from subfolders
 -  **Album info (title & description)** from `info.json`
--  **Auto song listing** with real-time DOM updates
+-  **Song listing** with real-time DOM updates
 -  Play, Pause, Next, Previous song controls
 -  Live seekbar with current time and duration
 -  Volume control + Mute/Unmute toggle
@@ -25,8 +25,8 @@ Songs are organized in folders inside a `SONGS/` directory, and albums are dynam
 ## 🛠️ Tech Stack
 
 - **HTML5** 
-- **CSS3** 
-- **JavaScript** 
+- **CSS** 
+- **Vanilla JavaScript** 
 
 ## 🖼️ Screenshots
 
