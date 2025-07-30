@@ -13,7 +13,7 @@ function playSong(track, pause = false) {
         currentSong.play();
         play.src = "IMG/pause.svg"
     }
-    let rawName = track.split("/").pop(); // safely gets "song_name.mp3"
+    let rawName = track.split("/").pop(); 
     let cleanName = rawName.replaceAll("_", " ").replace(".mp3", "");
     document.querySelector(".songName").innerHTML = cleanName;
 
