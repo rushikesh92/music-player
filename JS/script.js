@@ -47,7 +47,7 @@ async function getSongs(folder) {
     callcount++;
 
     currentFolder = folder.replaceAll(" ", "%20");
-    let a = await fetch(`/${folder}`)
+    let a = await fetch(`${folder}`)
 
     let response = await a.text();
     // console.log(response)
@@ -125,7 +125,7 @@ async function getSongs(folder) {
 }
 
 async function loadAlbums() {
-    let a = await fetch("/SONGS/");
+    let a = await fetch("SONGS/");
     let response = await a.text();
 
     let div = document.createElement("div");
@@ -141,13 +141,13 @@ async function loadAlbums() {
 
     let arr = Array.from(anchors);
     for (let i = 0; i < arr.length; i++) {
-        if (arr[i].href.includes("/SONGS/")) {
+        if (arr[i].href.includes("SONGS/")) {
             // console.log(arr[i])
             let folder = arr[i].title;
-            let a = await fetch(`/SONGS/${folder}/info.json`);
+            let a = await fetch(`SONGS/${folder}/info.json`);
             let info = await a.json();
             cardContainer.innerHTML += `<div class="card" data-folder="${folder}">
-                        <img src="/SONGS/${arr[i].title}/cover.jpg" alt="cover">
+                        <img src="SONGS/${arr[i].title}/cover.jpg" alt="cover">
                         <h2>${info.title}</h2>
                         <p>${info.desc}</p>
                         <img src="IMG/greenplay.svg" alt="" class="playButton">
