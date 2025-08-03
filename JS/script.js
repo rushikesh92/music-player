@@ -1,5 +1,4 @@
 console.log("Script attached")
-
 //global current song
 var currentSong = new Audio();
 let songNames = []
@@ -7,7 +6,6 @@ let callcount = 0;//to track if its default playlist or user selected playlist
 
 let currentFolder = "";
 function playSong(track, pause = false) {
-    // console.log(track)
     currentSong.src = track;
     if (!pause) {
         currentSong.play();
@@ -45,28 +43,11 @@ function secondsToTimestamp(seconds) {
 async function getSongs(folder) {
 
     callcount++;
-
-    currentFolder = folder.replaceAll(" ", "%20");
-    let a = await fetch(`${folder}`)
-
-    let response = await a.text();
-    // console.log(response)
-
-    let div = document.createElement("div");
-    div.innerHTML = response;
-
-    let allA = div.getElementsByTagName("a")
-    songNames = []
-    for (let i = 0; i < allA.length; i++) {
-        const element = allA[i];
-        if (element.href.endsWith(".mp3")) {
-            let parts = element.href.split('/');
-            let fileName = parts[parts.length - 1];
-            songNames.push(fileName)
-        }
-
-    }
-
+    currentFolder=folder;
+    let a = await fetch(`${folder}info.json`);
+    let info = await a.json();
+    songNames =info.songs;
+    
     // console.log(songNames)
 
 
@@ -74,7 +55,7 @@ async function getSongs(folder) {
     let songUl = document.querySelector(".songList").getElementsByTagName("ul")[0];
     songUl.innerHTML = "";
 
-    // console.log(songUl)
+
     for (let song of songNames) {
         song = song.replaceAll("_", " ")
         song = song.slice(0, song.length - 4);  //removing .mp3
@@ -99,12 +80,10 @@ async function getSongs(folder) {
     allLi.forEach((li) => {
 
         //adding eventListner on each li
-        // console.log(li)
+
         li.addEventListener("click", () => {
-            // console.log("Current Folder: - ",currentFolder)
             //extracting song name
             let sName = `${currentFolder}` + li.querySelector("div").firstElementChild.innerHTML.replaceAll(" ", "_") + ".mp3";
-            // console.log(sName)
             playSong(sName);
 
         })
@@ -130,19 +109,15 @@ async function loadAlbums() {
 
     let div = document.createElement("div");
     div.innerHTML = response;
-    // console.log(div)
 
     let anchors = div.getElementsByTagName("a");
-    // console.log(anchors)
 
 
     let cardContainer = document.querySelector(".cardContainer");
-    // console.log(cardContainer)
 
     let arr = Array.from(anchors);
     for (let i = 0; i < arr.length; i++) {
         if (arr[i].href.includes("SONGS/")) {
-            // console.log(arr[i])
             let folder = arr[i].title;
             let a = await fetch(`SONGS/${folder}/info.json`);
             let info = await a.json();
@@ -161,9 +136,10 @@ async function loadAlbums() {
 
 async function main() {
     //default song in library
-    await getSongs("SONGS/Graduation-Kanye West/");
-
     await loadAlbums();
+    await getSongs("SONGS/Chill Mood/");
+
+
     //attaching event listner to buttons in playbar
     play.addEventListener("click", () => {
         if (currentSong.paused) {
@@ -213,7 +189,6 @@ async function main() {
     })
     //on clicking close it will close
     document.querySelector(".close").addEventListener("click", (e) => {
-        // console.log(e)
         document.querySelector(".left").style.left = "-120%";
     })
 
@@ -273,13 +248,11 @@ async function main() {
 
     //load  songs of clicked folder in library
     Array.from(document.getElementsByClassName("card")).forEach((card) => {
-        // console.log(card)
         card.addEventListener("click", async (e) => {
             console.log("Folder : ", e.currentTarget.dataset.folder);
             getSongs("SONGS/" + e.currentTarget.dataset.folder + "/");
         })
     })
-
 
 }
 

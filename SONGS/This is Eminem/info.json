@@ -1,4 +1,5 @@
 {
     "title":"This is Eminenm",
-    "desc":"Eminem's discography"
+    "desc":"Eminem's discography",
+    "songs":["Cold_Piano.mp3", "Tokyo_cafe.mp3"]
 }

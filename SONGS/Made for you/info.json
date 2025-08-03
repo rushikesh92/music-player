@@ -1,4 +1,6 @@
 {
     "title":"Made for you",
-    "desc":"songs picked just for you"
+    "desc":"songs picked just for you",
+    "songs":["Good_vibes.mp3","Happy_mood.mp3"]
+
 }
