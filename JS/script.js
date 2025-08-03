@@ -104,34 +104,31 @@ async function getSongs(folder) {
 }
 
 async function loadAlbums() {
-    let a = await fetch("SONGS/");
-    let response = await a.text();
+  const cardContainer = document.querySelector(".cardContainer");
 
-    let div = document.createElement("div");
-    div.innerHTML = response;
+  // Step 1: Load album names from JSON
+  let res = await fetch("SONGS/albums.json");
+  let albumNames = await res.json(); // ["album1", "album2", "album3"]
 
-    let anchors = div.getElementsByTagName("a");
+  for (let folder of albumNames) {
+    try {
+      // Step 2: Load info.json from each album folder
+      let infoRes = await fetch(`SONGS/${folder}/info.json`);
+      let info = await infoRes.json();
 
-
-    let cardContainer = document.querySelector(".cardContainer");
-
-    let arr = Array.from(anchors);
-    for (let i = 0; i < arr.length; i++) {
-        if (arr[i].href.includes("SONGS/")) {
-            let folder = arr[i].title;
-            let a = await fetch(`SONGS/${folder}/info.json`);
-            let info = await a.json();
-            cardContainer.innerHTML += `<div class="card" data-folder="${folder}">
-                        <img src="SONGS/${arr[i].title}/cover.jpg" alt="cover">
-                        <h2>${info.title}</h2>
-                        <p>${info.desc}</p>
-                        <img src="IMG/greenplay.svg" alt="" class="playButton">
-                    </div>`;
-
-        }
+      // Step 3: Add card to the page
+      cardContainer.innerHTML += `
+        <div class="card" data-folder="${folder}">
+          <img src="SONGS/${folder}/cover.jpg" alt="cover">
+          <h2>${info.title}</h2>
+          <p>${info.desc}</p>
+          <img src="IMG/greenplay.svg" alt="" class="playButton">
+        </div>
+      `;
+    } catch (err) {
+      console.error(`Error loading ${folder}:`, err);
     }
-
-
+  }
 }
 
 async function main() {
